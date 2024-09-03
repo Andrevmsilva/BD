@@ -1,0 +1,121 @@
+/*INNER JOIN
+O INNER JOIN retorna apenas as linhas que têm correspondência em ambas as tabelas. É o tipo de JOIN mais comum e é utilizado quando se
+ deseja obter dados que estão relacionados nas duas tabelas.
+ 
+Exemplo de uso:
+sql
+SELECT * FROM TabelaA INNER JOIN TabelaB ON TabelaA.coluna = TabelaB.coluna;
+
+LEFT JOIN (ou LEFT OUTER JOIN)
+O LEFT JOIN retorna todas as linhas da tabela à esquerda e as linhas correspondentes da tabela à direita. Se não houver correspondência, 
+os resultados da tabela à direita serão nulos.
+
+Exemplo de uso:
+sql
+SELECT * FROM TabelaA LEFT JOIN TabelaB ON TabelaA.coluna = TabelaB.coluna;
+
+RIGHT JOIN (ou RIGHT OUTER JOIN)
+O RIGHT JOIN é o oposto do LEFT JOIN; ele retorna todas as linhas da tabela à direita e as linhas correspondentes da tabela à esquerda. 
+Se não houver correspondência, os resultados da tabela à esquerda serão nulos.
+
+Exemplo de uso:
+sql
+SELECT * FROM TabelaA RIGHT JOIN TabelaB ON TabelaA.coluna = TabelaB.coluna;
+
+FULL JOIN (ou FULL OUTER JOIN)
+O FULL JOIN combina os resultados do LEFT JOIN e do RIGHT JOIN. Ele retorna todas as linhas de ambas as tabelas, com correspondências
+ onde existirem. Se não houver correspondência, os resultados serão nulos.
+ 
+Exemplo de uso:
+sql
+SELECT * FROM TabelaA FULL JOIN TabelaB ON TabelaA.coluna = TabelaB.coluna;
+
+CROSS JOIN
+O CROSS JOIN retorna o produto cartesiano de duas tabelas, ou seja, combina todas as linhas da tabela A com todas as linhas da 
+tabela B. Este tipo de JOIN não requer uma condição de junção.
+
+Exemplo de uso:
+sql
+SELECT * FROM TabelaA CROSS JOIN TabelaB;
+
+OUTROS TIPOS DE JOIN
+Além dos tipos mencionados, existem também JOINs como o LEFT EXCLUDING JOIN, RIGHT EXCLUDING JOIN e OUTER EXCLUDING JOIN,
+ que são utilizados para retornar registros que não têm correspondência em uma das tabelas. Esses JOINs, no entanto, são menos
+ comuns e podem variar em implementação dependendo do sistema de gerenciamento de banco de dados (SGBD) utilizad0*/
+  
+  
+  create database escola;
+
+use escola;
+
+
+
+create table cursos(
+id int not null primary key auto_increment,
+nome_curso varchar(100)
+
+);
+
+create table matriculas(
+id int not null primary key auto_increment,
+curso_id int not null,
+foreign key (curso_id) references cursos(id)
+);
+
+create table alunos(
+id int not null primary key auto_increment,
+nome varchar (100),
+id_matricula int not null,
+idade int,
+foreign key (id_matricula) references matriculas(id)
+
+);
+
+insert into cursos(nome_curso)  values ('Desenvolvimento de Sistemas');
+insert into cursos(nome_curso) values ('Marcus jurkenberg');
+insert into cursos(nome_curso) values ('dá');
+insert into cursos(nome_curso) values ('Marcus juwewqewqrkenberg');
+insert into cursos(nome_curso) values ('dáewqe');
+
+insert into matriculas(curso_id) values (1);
+insert into matriculas(curso_id) values (2);
+insert into matriculas(curso_id) values (3);
+insert into matriculas(curso_id) values (4);
+insert into matriculas(curso_id) values (5);
+
+
+
+insert into alunos(nome,idade,id_matricula) values ('João Paulo',26,1);
+insert into alunos(nome,idade,id_matricula) values ('João Passo',28,2);
+insert into alunos(nome,idade,id_matricula) values ('João Padulo',268,3);
+insert into alunos(nome,idade,id_matricula) values ('João Padulo',268,4);
+insert into alunos(nome,idade,id_matricula) values ('João Padulo',268,5);
+insert into alunos(nome,idade,id_matricula) values ('João Padulo',268,6);
+
+insert into matriculas(id) values (6);
+
+
+select * from matriculas
+inner join cursos on matriculas.curso_id = cursos.id
+inner join alunos on matriculas.id = alunos.id_matricula;
+
+select * from matriculas
+left join cursos on matriculas.curso_id = cursos.id
+left join alunos on matriculas.id = alunos.id_matricula;
+
+
+
+select *  from cursos
+right join matriculas on matriculas.curso_id = cursos.id
+right join alunos on matriculas.id = alunos.id_matricula;
+
+select * from matriculas
+ join cursos on matriculas.curso_id = cursos.id
+ join alunos on matriculas.id = alunos.id_matricula;
+
+SELECT *
+FROM matriculas
+LEFT JOIN cursos ON matriculas.curso_id = cursos.id  
+LEFT JOIN alunos ON matriculas.id = alunos.id_matricula;
+
+
