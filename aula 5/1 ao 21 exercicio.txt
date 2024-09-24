@@ -1,0 +1,211 @@
+CREATE DATABASE planilha;
+
+USE planilha;
+
+
+CREATE TABLE AMIGOS (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100),
+    idade INT NOT NULL,
+    aniversario DATE,
+    genero varchar(1) check(upper(genero)='M' or upper(genero)='F'),
+    celular VARCHAR(20)
+);
+
+CREATE TABLE CLIENTES (
+    CPF BIGINT NOT NULL UNIQUE,
+    RG BIGINT NOT NULL UNIQUE,
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    aniversario DATE NOT NULL,
+    celular VARCHAR(20),
+    estado CHAR(2),
+    cidade VARCHAR(100)
+);
+
+CREATE TABLE PRODUTOS (
+    IDPROD INT NOT NULL AUTO_INCREMENT,
+    CODPROD INT NOT NULL,
+    nomeproduto VARCHAR(100) NOT NULL,
+    validade DATE,
+    preco DECIMAL(12,2),
+    categoria VARCHAR(100),
+    estoque INT NOT NULL,
+    marca VARCHAR(100),
+    desconto DECIMAL(12,2),
+    fornecedor VARCHAR(100),
+    faixa_etaria VARCHAR(20),
+    PRIMARY KEY(IDPROD,CODPROD)
+);
+
+/*1*/
+INSERT INTO PRODUTOS (CODPROD,nomeproduto, validade, preco, categoria, estoque, marca, desconto, fornecedor, faixa_etaria) VALUES
+(1,'Notebook XYZ', '2025-12-31', 2999.99, 'Eletrônicos', 50, 'TechBrand', 150.00, 'TechSuppliers', 'Adulto'),
+(2,'Tênis de Corrida', '2026-03-15', 499.99, 'Roupas', 200, 'SportWear', 50.00, 'SportGoods', 'Todos');
+
+/*2*/
+SELECT * FROM planilha.PRODUTOS;
+
+/*3*/
+drop table CLIENTES;
+
+/*4*/
+CREATE TABLE CLIENTES (
+    CPF BIGINT NOT NULL UNIQUE,
+    RG BIGINT NOT NULL UNIQUE,
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    aniversario DATE NOT NULL,
+    celular VARCHAR(20) NULL,
+    estado CHAR(2),
+    cidade VARCHAR(100)
+);
+
+/*5*/
+INSERT INTO CLIENTES (CPF, RG, aniversario, celular, estado, cidade) VALUES
+(53417263543, 98340143, '1985-07-12', '(11) 91234-5678', 'SP', 'São Paulo');
+
+/*6*/
+INSERT INTO CLIENTES (CPF, RG, aniversario, celular, estado, cidade) VALUES
+(53417263543, null, '1985-07-12', '(11) 91234-5678', 'SP', 'São Paulo');
+
+/*7*/
+INSERT INTO CLIENTES (id,CPF, RG, aniversario, celular, estado, cidade) VALUES
+(1,53417263543, null, '1985-07-12', '(11) 91234-5678', 'SP', 'São Paulo');
+
+
+/*8*/
+INSERT INTO PRODUTOS (IDPROD,CODPROD,nomeproduto, validade, preco, categoria, estoque, marca, desconto, fornecedor, faixa_etaria) VALUES
+(1,1,'Notebook XYZ', '2025-12-31', 2999.99, 'Eletrônicos', 50, 'TechBrand', 150.00, 'TechSuppliers', 'Adulto');
+
+/*9*/
+drop table CLIENTES
+
+/*10*/
+
+ CREATE TABLE CLIENTES (
+    CPF BIGINT NOT NULL UNIQUE,
+    RG BIGINT NOT NULL UNIQUE,
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    aniversario DATE NOT NULL,
+    celular VARCHAR(20) NULL,
+    estado CHAR(2),
+    cidade VARCHAR(100)
+);
+
+alter table CLIENTES drop column id;
+alter table CLIENTES add codigo_cli int not null primary key auto_increment;
+
+/*11*/
+INSERT INTO PRODUTOS (nomeproduto, validade, preco, categoria, estoque, marca, desconto, fornecedor, faixa_etaria) VALUES
+('Notebook XYZ', '2025-12-31', 2999.99, 'Eletrônicos', 50, 'TechBrand', 150.00, 'TechSuppliers', 'Adulto');
+
+/*12*/
+INSERT INTO PRODUTOS (nomeproduto, validade, preco, categoria, estoque, marca, desconto, fornecedor, faixa_etaria) VALUES
+('Notebook XYZ', '2025-12-31', 2999.99, 'Eletrônicos', 50, 'TechBrand', 150.00, 'TechSuppliers', null);
+
+/*13*/
+SELECT * FROM planilha.PRODUTOS;
+
+/*14*/
+INSERT INTO PRODUTOS (IDPROD,CODPROD,nomeproduto, validade, preco, categoria, estoque, marca, desconto, fornecedor, faixa_etaria) VALUES
+(1,1,'Notebook XYZ', '2025-12-31', 2999.99, 'Eletrônicos', 50, 'TechBrand', 150.00, 'TechSuppliers', 'Adulto');
+
+/*15*/
+create database hospital;
+
+use hospital;
+
+/*16*/
+CREATE TABLE MEDICO (
+    id_medico INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    especialidade VARCHAR(50) NOT NULL,
+    crm VARCHAR(20) NOT NULL UNIQUE,
+    telefone VARCHAR(15),
+    email VARCHAR(100)
+);
+
+CREATE TABLE PACIENTE (
+    id_paciente INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    data_nascimento DATE NOT NULL,
+    cpf VARCHAR(11) NOT NULL UNIQUE,
+    telefone VARCHAR(15),
+    email VARCHAR(100)
+);
+
+CREATE TABLE CONSULTA (
+    id_consulta INT AUTO_INCREMENT,
+    id_medico INT,
+    id_paciente INT,
+    data_consulta DATETIME NOT NULL,
+    motivo TEXT,
+    prescricao TEXT,
+    PRIMARY KEY (id_consulta, data_consulta)
+);
+
+ALTER TABLE CONSULTA ADD CONSTRAINT fk_medico
+FOREIGN KEY (id_medico) REFERENCES MEDICO(id_medico);
+
+ALTER TABLE CONSULTA ADD CONSTRAINT fk_paciente
+FOREIGN KEY (id_paciente) REFERENCES PACIENTE(id_paciente);
+
+/*17*/
+INSERT INTO MEDICO (nome, especialidade, crm, telefone, email) VALUES
+('Dr. Ana Silva', 'Pediatria', '123456789', '11-91234-5678', 'ana.silva@email.com'),
+('Dr. João Souza', 'Cardiologia', '987654321', '11-99876-5432', 'joao.souza@email.com');
+
+INSERT INTO PACIENTE (nome, data_nascimento, cpf, telefone, email) VALUES
+('Carlos Pereira', '2010-05-20', '12345678901', '11-92345-6789', 'carlos.pereira@email.com'),
+('Mariana Lima', '1985-11-15', '10987654321', '11-93456-7890', 'mariana.lima@email.com');
+
+INSERT INTO CONSULTA (id_medico, id_paciente, data_consulta, motivo, prescricao) VALUES
+(1, 1, '2024-09-20 10:00:00', 'Rotina de check-up', 'Vacina e consulta geral'),
+(2, 2, '2024-09-21 15:00:00', 'Dor no peito', 'Exames cardiológicos');
+
+/*18*/
+
+INSERT INTO MEDICO (id_medico,nome, especialidade, crm, telefone, email) VALUES
+(1,'Dr. Ana Silva', 'Pediatria', '123456779', '11-91234-5678', 'ana.silva@email.com');
+
+INSERT INTO PACIENTE (id_paciente,nome, data_nascimento, cpf, telefone, email) VALUES
+(1,'Carlos Pereira', '2010-05-20', '12345678901', '11-92345-6789', 'carlos.pereira@email.com');
+
+/*19*/
+INSERT INTO CONSULTA (id_medico, id_paciente,id_consulta, data_consulta, motivo, prescricao) VALUES
+(1,1,1,'2024-09-20 10:00:00', 'Rotina de check-up', 'Vacina e consulta geral');
+
+/*20*/
+SELECT * FROM hospital.PACIENTE;
+SELECT * FROM hospital.CONSULTA;
+SELECT * FROM hospital.MEDICO;
+
+/*21*/
+CREATE DATABASE jogo;
+
+use jogo;
+
+CREATE TABLE ATLETA (
+    cpf VARCHAR(14) PRIMARY KEY,
+    rg VARCHAR(12),
+    nome VARCHAR(100) NOT NULL,
+    idade INT,
+    peso DECIMAL(5,2),
+    altura DECIMAL(4,2),
+    chuteira INT,
+    salario DECIMAL(10,2),
+    bonus DECIMAL(10,2),
+    desconto DECIMAL(10,2),
+    data_nascimento DATE,
+    posicao VARCHAR(50),
+    clube VARCHAR(100),
+    numero_camisa INT
+);
+
+INSERT INTO ATLETA (cpf, rg, nome, idade, peso, altura, chuteira, salario, bonus, desconto, data_nascimento, posicao, clube, numero_camisa) VALUES
+('12345678990', '98657234-x', 'Tião Carreiro Wonder', 20, 78.00, 1.80, 48, 27380.90, 10000.00, 32.90, '2019-02-28', 'Goleiro', 'Lençoense da Quebrada', 1),
+('23456789012', '12345678-y', 'Maria do Sol', 22, 65.50, 1.70, 39, 25000.00, 5000.00, 15.00, '1998-05-15', 'Atacante', 'Time do Sol', 9),
+('34567890123', '23456789-z', 'Pedro da Silva', 25, 80.00, 1.85, 42, 30000.00, 15000.00, 25.00, '1995-11-30', 'Meio-Campo', 'Clube da Cidade', 10),
+('45678901234', '34567890-w', 'Joana das Neves', 19, 55.00, 1.65, 36, 22000.00, 8000.00, 20.00, '2001-03-20', 'Defensora', 'Unidos do Futebol', 5),
+('56789012345', '45678901-v', 'Carlos do Arco', 23, 90.00, 1.95, 47, 28000.00, 12000.00, 18.00, '1997-06-10', 'Zagueiro', 'Time dos Guerreiros', 3);
+
+SELECT * FROM ATLETA;
