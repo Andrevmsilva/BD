@@ -1,3 +1,5 @@
+set lc_time_names = "pt_BR";
+
 create database pizzaria;
 
 use pizzaria;
@@ -70,3 +72,18 @@ insert into item_pedido (pedido_id,pizza_id,quantidade,valor) values (3,5,1.0,22
 insert into item_pedido (pedido_id,pizza_id,quantidade,valor) values (4,3,1.0,20.00);
 insert into item_pedido (pedido_id,pizza_id,quantidade,valor) values (4,5,1.0,22.00);
 insert into item_pedido (pedido_id,pizza_id,quantidade,valor) values (5,1,3.0,45.00);
+
+select * from pedido where data_hora = (select min(data_hora) from pedido);
+select * from pedido where data_hora = (select max(data_hora) from pedido);
+
+select * from pedido where valor = (select max(valor) from pedido);
+select * from pedido where valor = (select min(valor) from pedido);
+
+select nome from cliente order by nome asc;
+select nome from cliente order by nome desc;
+
+select upper(nome) from cliente;
+
+select sum(valor) from pedido where data_hora like  '2016-12-18%';
+
+select datediff((select max(data_hora) from pedido), (select min(data_hora) from pedido)) as datapedido;
