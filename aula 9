@@ -1,0 +1,93 @@
+set lc_time_names = "pt_BR";
+
+create database pizzaria;
+
+use pizzaria;
+
+create table cliente(
+cliente_id int not null primary key auto_increment,
+telefone varchar(15),
+nome varchar(30),
+logradouro varchar(30),
+numero decimal(5,0),
+complemento varchar(30),
+bairro varchar(30),
+referencia varchar(30)
+);
+
+create table pedido(
+pedido_id int not null primary key auto_increment,
+cliente_id int not null,
+data_hora datetime,
+valor decimal(5,2),
+foreign key (cliente_id) references cliente(cliente_id) 
+);
+
+create table pizza(
+pizza_id int not null primary key auto_increment,
+nome varchar(30),
+descricao varchar(30),
+valor decimal(4,2)
+
+);
+
+create table item_pedido(
+pedido_id int not null,
+pizza_id int not null,
+quantidade decimal(2,0),
+valor decimal(5,2),
+foreign key (pedido_id) references pedido(pedido_id),
+foreign key (pizza_id) references pizza(pizza_id) 
+);
+
+
+insert into pizza (nome,valor) values ("inglesa",15.00);
+insert into pizza (nome,valor) values ("portuguesa",15.00);
+insert into pizza (nome,valor) values ("4 queijos",25.00);
+insert into pizza (nome,valor) values ("5 queijos",30.00);
+insert into pizza (nome) values ("provolone");
+
+insert into cliente (telefone,nome,logradouro,numero,bairro,referencia)  values ('(11) 1111-1111','Alexandre','Rua das Palmeiras',111,'Bela Vista','Em frente a escola');
+
+
+insert into cliente (telefone,nome,logradouro,numero,bairro)  values ('(22) 2222-2222','Bruna Dantas','Rua das Rosas',222,'Cantareira');
+insert into cliente (telefone,nome,logradouro,numero,bairro)  values ('(33) 3333-3333','Carlos Viera','Rua das Avencas',333,'Bela Vista');
+insert into cliente (telefone,nome,logradouro,numero,bairro,referencia)  values ('(44) 4444-4444','Julia Silva','Rua das Cravos',444,'Cantareira','Esquina do mercado');
+insert into cliente (telefone,nome,logradouro,numero,bairro)  values ('(55) 5555-5555','Mariana Silva','Rua das Acácias',555,'Bela Vista');
+insert into cliente (telefone,nome,logradouro,numero,bairro)  values ('(66) 6666-6666','Laura Madureira','Rua das Gardênias',666,'Cantareira');
+
+insert into pedido (cliente_id,data_hora,valor) values (1,'2016-12-15 20:30',15.00);
+insert into pedido (cliente_id,data_hora,valor) values (2,'2016-12-15 20:38',40.00);
+insert into pedido (cliente_id,data_hora,valor) values (3,'2016-12-17 20:59',22.00);
+insert into pedido (cliente_id,data_hora,valor) values (1,'2016-12-17 22:00',42.00);
+insert into pedido (cliente_id,data_hora,valor) values (2,'2016-12-18 19:00',45.00);
+insert into pedido (cliente_id,data_hora,valor) values (3,'2016-12-18 21:22',44.00);
+insert into pedido (cliente_id,data_hora,valor) values (4,'2016-12-19 22:22',72.00);
+insert into pedido (cliente_id,data_hora,valor) values (6,'2016-12-19 22:26',34.00);
+
+insert into item_pedido (pedido_id,pizza_id,quantidade,valor) values (1,1,1.0,15.00);
+insert into item_pedido (pedido_id,pizza_id,quantidade,valor) values (1,4,1.0,15.00);
+insert into item_pedido (pedido_id,pizza_id,quantidade,valor) values (2,3,2.0,40.00);
+insert into item_pedido (pedido_id,pizza_id,quantidade,valor) values (3,5,1.0,22.00);
+insert into item_pedido (pedido_id,pizza_id,quantidade,valor) values (4,3,1.0,20.00);
+insert into item_pedido (pedido_id,pizza_id,quantidade,valor) values (4,5,1.0,22.00);
+insert into item_pedido (pedido_id,pizza_id,quantidade,valor) values (5,1,3.0,45.00);
+
+select * from pedido where data_hora = (select min(data_hora) from pedido);
+select * from pedido where data_hora = (select max(data_hora) from pedido);
+
+select * from pedido where valor = (select max(valor) from pedido);
+select * from pedido where valor = (select min(valor) from pedido);
+
+select nome from cliente order by nome asc;
+select nome from cliente order by nome desc;
+
+select upper(nome) from cliente;
+
+select sum(valor) from pedido where data_hora like  '2016-12-18%';
+
+select datediff((select max(data_hora) from pedido), (select min(data_hora) from pedido)) as datapedido;
+
+select pedido_id, sum(quantidade) from item_pedido group by pedido_id order by sum(quantidade) desc;
+
+select cliente_id, sum(valor),count(*) from pedido group by cliente_id order by sum(valor) desc;
