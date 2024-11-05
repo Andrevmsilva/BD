@@ -91,3 +91,5 @@ select datediff((select max(data_hora) from pedido), (select min(data_hora) from
 select pedido_id, sum(quantidade) from item_pedido group by pedido_id order by sum(quantidade) desc;
 
 select cliente_id, sum(valor),count(*) from pedido group by cliente_id order by sum(valor) desc;
+
+select item_pedido.pedido_id,pedido.data_hora,pedido.cliente_id, cliente.nome from item_pedido inner join pedido on item_pedido.pedido_id  = pedido.pedido_id inner join cliente on pedido.cliente_id = cliente.cliente_id order by item_pedido.pedido_id asc  
