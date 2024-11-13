@@ -1,0 +1,184 @@
+create database assinatura;
+
+use assinatura;
+
+create table municipio(
+	cd_municipio int not null primary key auto_increment,
+    ds_municipio varchar(200)
+);
+
+create table telefone(
+	cd_fone int not null primary key auto_increment,
+    ddd int not null,
+    n_fone int not null
+);
+
+create table endereco(
+	cd_endereco int not null primary key auto_increment,
+    ds_endereco varchar(200),
+    complemento varchar(100),
+    cep int not null
+);
+
+create table end_munic(
+	cd_endereco int not null,
+    cd_municipio int not null,
+    foreign key (cd_endereco) references endereco(cd_endereco),
+    foreign key (cd_municipio) references municipio(cd_municipio)
+);
+
+create table end_fone(
+	cd_endereco int not null,
+    cd_fone int not null,
+    foreign key (cd_endereco) references endereco(cd_endereco),
+    foreign key (cd_fone) references telefone(cd_fone)
+);
+
+create table ramo_atividade(
+	cd_ramo int not null primary key auto_increment,
+	ds_ramo varchar(200)
+);
+
+create table tipo_assinante(
+	cd_tipo int not null primary key auto_increment,
+    ds_tipo varchar(200)
+);
+
+create table assinante(
+	cd_assinante int not null primary key auto_increment,
+    nm_assinante varchar(100) not null
+);
+
+create table ass_ramo(
+	cd_assinante int not null,
+    cd_ramo int not null,
+    foreign key (cd_assinante) references assinante(cd_assinante),
+    foreign key (cd_ramo) references ramo_atividade(cd_ramo)
+);
+
+create table ass_tipo(
+	cd_assinante int not null,
+    cd_tipo int not null,
+    foreign key (cd_assinante) references assinante(cd_assinante),
+    foreign key (cd_tipo) references tipo_assinante(cd_tipo)
+);
+
+create table ass_end(
+	cd_assinante int not null,
+    cd_endereco int not null,
+    foreign key (cd_assinante) references assinante(cd_assinante),
+    foreign key (cd_endereco) references endereco(cd_endereco)
+);
+
+insert into municipio (ds_municipio) values ('são paulo');
+insert into municipio (ds_municipio) values ('rio de janeiro');
+insert into municipio (ds_municipio) values ('belo horizonte');
+insert into municipio (ds_municipio) values ('pelotas');
+insert into municipio (ds_municipio) values ('natal');
+
+insert into telefone (ddd, n_fone) values (11, 912345678);
+insert into telefone (ddd, n_fone) values (21, 998765432);
+insert into telefone (ddd, n_fone) values (31, 987654321);
+insert into telefone (ddd, n_fone) values (41, 987654311);
+insert into telefone (ddd, n_fone) values (51, 987654312);
+insert into telefone (ddd, n_fone) values (61, 987654335);
+
+insert into endereco (ds_endereco, complemento, cep) values ('avenida paulista', 'apto 101', 12345678);
+insert into endereco (ds_endereco, complemento, cep) values ('rua rio de janeiro', 'casa 5', 23456789);
+insert into endereco (ds_endereco, complemento, cep) values ('rua do comércio', 'sala 305', 34567890);
+insert into endereco (ds_endereco, complemento, cep) values ('Rua Nova, 123', 'Apt 45', 12345678);
+insert into endereco (ds_endereco, complemento, cep) values ('Rua olavo, 1423', 'apt 35', 12345645);
+
+
+insert into end_munic (cd_endereco, cd_municipio) values (1, 1);
+insert into end_munic (cd_endereco, cd_municipio) values (2, 2);
+insert into end_munic (cd_endereco, cd_municipio) values (3, 3);
+insert into end_munic (cd_endereco, cd_municipio) values (4, 4);
+insert into end_munic (cd_endereco, cd_municipio) values (5, 5);
+
+insert into end_fone (cd_endereco, cd_fone) values (1, 1);
+insert into end_fone (cd_endereco, cd_fone) values (2, 2);
+insert into end_fone (cd_endereco, cd_fone) values (3, 3);
+insert into end_fone (cd_endereco, cd_fone) values (4, 4);
+insert into end_fone (cd_endereco, cd_fone) values (1, 5);
+insert into end_fone (cd_endereco, cd_fone) values (5, 6);
+
+insert into ramo_atividade (ds_ramo) values ('tecnologia');
+insert into ramo_atividade (ds_ramo) values ('consultoria');
+insert into ramo_atividade (ds_ramo) values ('educação');
+insert into ramo_atividade (ds_ramo) values ('Tecnologia da Informação');
+
+
+insert into tipo_assinante (ds_tipo) values ('pessoa física');
+insert into tipo_assinante (ds_tipo) values ('pessoa jurídica');
+insert into tipo_assinante (ds_tipo) values ('residencial');
+insert into tipo_assinante (ds_tipo) values ('comercial');
+
+insert into assinante (nm_assinante) values ('joão silva');
+insert into assinante (nm_assinante) values ('maria oliveira');
+insert into assinante (nm_assinante) values ('empresa x');
+insert into assinante (nm_assinante) values ('Carlos Silva');
+insert into assinante (nm_assinante) values ('Bidu');
+
+insert into ass_ramo (cd_assinante, cd_ramo) values (1, 1);
+insert into ass_ramo (cd_assinante, cd_ramo) values (2, 2);
+insert into ass_ramo (cd_assinante, cd_ramo) values (3, 3);
+insert into ass_ramo (cd_assinante, cd_ramo) values (4, 4);
+
+insert into ass_tipo (cd_assinante, cd_tipo) values (1, 1);
+insert into ass_tipo (cd_assinante, cd_tipo) values (2, 1);
+insert into ass_tipo (cd_assinante, cd_tipo) values (3, 2);
+insert into ass_tipo (cd_assinante, cd_tipo) values (4, 3);
+insert into ass_tipo (cd_assinante, cd_tipo) values (5, 4);
+
+insert into ass_end (cd_assinante, cd_endereco) values (1, 1);
+insert into ass_end (cd_assinante, cd_endereco) values (2, 2);
+insert into ass_end (cd_assinante, cd_endereco) values (3, 3);
+insert into ass_end (cd_assinante, cd_endereco) values (4, 4);
+insert into ass_end (cd_assinante, cd_endereco) values (5, 5);
+
+
+/*a*/
+select assinante.nm_assinante, endereco.*, telefone.* from assinante
+inner join ass_end on assinante.cd_assinante = ass_end.cd_assinante
+inner join endereco on ass_end.cd_endereco = endereco.cd_endereco
+inner join end_fone on endereco.cd_endereco = end_fone.cd_endereco
+inner join telefone on end_fone.cd_fone = telefone.cd_fone;
+
+/*b*/
+select assinante.nm_assinante, ramo_atividade.ds_ramo from assinante 
+inner join ass_ramo on assinante.cd_assinante = ass_ramo.cd_assinante
+inner join ramo_atividade on ass_ramo.cd_ramo = ramo_atividade.cd_ramo
+order by ramo_atividade.ds_ramo, assinante.nm_assinante;
+
+/*c*/
+select assinante.nm_assinante, municipio.ds_municipio, tipo_assinante.ds_tipo from assinante
+inner join ass_end on assinante.cd_assinante = ass_end.cd_assinante
+inner join endereco on ass_end.cd_endereco = endereco.cd_endereco
+inner join end_munic on endereco.cd_endereco = end_munic.cd_endereco
+inner join municipio on end_munic.cd_municipio = municipio.cd_municipio
+inner join ass_tipo on assinante.cd_assinante = ass_tipo.cd_assinante
+inner join tipo_assinante on ass_tipo.cd_tipo = tipo_assinante.cd_tipo
+where municipio.ds_municipio = 'pelotas' and tipo_assinante.ds_tipo = 'residencial';
+
+/*D*/
+select assinante.nm_assinante from assinante
+inner join ass_end on assinante.cd_assinante = ass_end.cd_assinante
+inner join endereco on ass_end.cd_endereco = endereco.cd_endereco
+inner join end_fone on endereco.cd_endereco = end_fone.cd_endereco
+inner join telefone on end_fone.cd_fone = telefone.cd_fone
+group by assinante.nm_assinante having count(telefone.cd_fone) > 1;
+
+/*E*/
+select assinante.nm_assinante, telefone.*, tipo_assinante.ds_tipo, municipio.ds_municipio from assinante
+inner join ass_end on assinante.cd_assinante = ass_end.cd_assinante
+inner join endereco on ass_end.cd_endereco = endereco.cd_endereco
+inner join end_munic on endereco.cd_endereco = end_munic.cd_endereco
+inner join municipio on end_munic.cd_municipio = municipio.cd_municipio
+inner join end_fone on endereco.cd_endereco = end_fone.cd_endereco
+inner join telefone on end_fone.cd_fone = telefone.cd_fone
+inner join ass_tipo on assinante.cd_assinante = ass_tipo.cd_assinante
+inner join tipo_assinante on ass_tipo.cd_tipo = tipo_assinante.cd_tipo
+where tipo_assinante.ds_tipo = 'comercial' and (municipio.ds_municipio = 'natal' or municipio.ds_municipio = 'joão câmara');
+
+
