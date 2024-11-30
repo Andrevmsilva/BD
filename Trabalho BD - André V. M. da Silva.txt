@@ -1,0 +1,128 @@
+CREATE DATABASE IF NOT EXISTS escola;
+USE escola;
+
+CREATE TABLE alunos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    data_nascimento DATE NOT NULL,
+    cidade VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE cursos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    duracao INT NOT NULL
+);
+
+CREATE TABLE matriculas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    aluno_id INT NOT NULL,
+    curso_id INT NOT NULL,
+    data_matricula DATE NOT NULL,
+    FOREIGN KEY (aluno_id) REFERENCES alunos(id),
+    FOREIGN KEY (curso_id) REFERENCES cursos(id)
+);
+
+INSERT INTO alunos (nome, data_nascimento, cidade) VALUES
+('João Silva', '2005-04-23', 'São Paulo'),
+('Maria Oliveira', '2004-12-10', 'Rio de Janeiro'),
+('Carlos Souza', '2006-08-15', 'Curitiba'),
+('Ana Lima', '2005-02-20', 'Belo Horizonte');
+
+INSERT INTO cursos (nome, duracao) VALUES
+('Informática', 24),
+('Administração', 18),
+('Enfermagem', 36);
+
+INSERT INTO matriculas (aluno_id, curso_id, data_matricula) VALUES
+(1, 1, '2023-01-10'),
+(2, 2, '2023-02-15'),
+(3, 1, '2023-01-20'),
+(4, 3, '2023-03-05');
+
+-- 1
+SELECT * FROM alunos;
+
+-- 2
+SELECT nome, duracao FROM cursos;
+
+-- 3
+SELECT nome FROM alunos WHERE cidade = 'São Paulo';
+
+-- 4
+SELECT * FROM alunos WHERE data_nascimento < '2005-01-01';
+
+-- 5
+SELECT nome FROM cursos WHERE duracao > 20;
+
+-- 6
+SELECT nome FROM alunos ORDER BY nome;
+
+-- 7
+SELECT a.nome AS aluno, c.nome AS curso
+FROM alunos a
+JOIN matriculas m ON a.id = m.aluno_id
+JOIN cursos c ON m.curso_id = c.id;
+
+-- 8
+SELECT a.nome AS aluno, c.nome AS curso, m.data_matricula
+FROM matriculas m
+JOIN alunos a ON m.aluno_id = a.id
+JOIN cursos c ON m.curso_id = c.id;
+
+-- 9
+SELECT a.nome 
+FROM alunos a 
+LEFT JOIN matriculas m ON a.id = m.aluno_id 
+WHERE m.id IS NULL;
+
+-- 10
+SELECT COUNT(*) AS total_alunos_informatica 
+FROM matriculas m 
+JOIN cursos c ON m.curso_id = c.id 
+WHERE c.nome = 'Informática';
+
+-- 11
+SELECT AVG(duracao) AS media_duracao FROM cursos;
+
+-- 12
+SELECT MIN(data_matricula) AS menor_data, MAX(data_matricula) AS maior_data FROM matriculas;
+
+-- 13
+SELECT c.nome, COUNT(m.aluno_id) AS total_alunos 
+FROM cursos c 
+JOIN matriculas m ON c.id = m.curso_id 
+GROUP BY c.id 
+HAVING COUNT(m.aluno_id) > 1;
+
+-- 14
+SELECT a.nome, YEAR(CURDATE()) - YEAR(a.data_nascimento) AS idade 
+FROM alunos a 
+JOIN matriculas m ON a.id = m.aluno_id 
+ORDER BY idade DESC;
+
+-- 15
+SELECT cidade, COUNT(*) AS total_alunos 
+FROM alunos 
+GROUP BY cidade 
+HAVING COUNT(*) > 1;
+
+-- 16
+SELECT a.nome 
+FROM alunos a 
+JOIN matriculas m ON a.id = m.aluno_id 
+WHERE m.curso_id = (SELECT id FROM cursos ORDER BY duracao DESC LIMIT 1);
+
+-- 17
+SELECT * FROM cursos c 
+WHERE NOT EXISTS (SELECT * FROM matriculas m WHERE m.curso_id = c.id);
+
+-- 18
+INSERT INTO cursos (nome, duracao) VALUES ('Engenharia', 48);
+
+-- 19
+UPDATE alunos SET nome = 'Carlos Pereira' WHERE nome = 'Carlos Souza';
+
+-- 20
+DELETE FROM matriculas WHERE curso_id = (SELECT id FROM cursos WHERE nome = 'Administração');
+DELETE FROM cursos WHERE nome = 'Administração';
